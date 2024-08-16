@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize')
-const sequelize =  require('../config/config')
+const { DataTypes } = require('sequelize')              
+const sequelize =  require('../config/config')          
 
-const User = sequelize.define('User',{
+const User = sequelize.define('User',{                    // ORM objeto relacional mapeamento
 
     username:{
         type:DataTypes.STRING,

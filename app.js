@@ -1,8 +1,11 @@
-const express = require ('express');                     // criação do web server
-const app = express();                                  
+const express = require ('express');
+const app = express();
 const sequelize = require('./config/config');
+const userRoutes = require('./routes/userRoutes');
 
-const User = require('./models/user');
+app.use(express.json());
+
+app.use('/api', userRoutes);
 
 sequelize.sync()
     .then(
@@ -13,6 +16,6 @@ sequelize.sync()
             (error) => {
                 console.error('Unable to connect to the database: ',error);
             }
-        )
+        );
 
 module.exports = app;
