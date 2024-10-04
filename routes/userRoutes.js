@@ -30,7 +30,6 @@ const authenticateToken = require('../middlewares/authMiddlewares');
  *           type: boolean
  *           description: Indicates if the user is active
  *       example:
- *         id: 1
  *         username: John Cezar
  *         loginuser: cezar.john
  *         password: secret@123
@@ -63,7 +62,7 @@ const authenticateToken = require('../middlewares/authMiddlewares');
  *                 type: object
  *                 properties:
  *                   id:
- *                     type: integer
+ *                     type: integers
  *                   username:
  *                     type: string
  *                   loginuser:
@@ -71,12 +70,12 @@ const authenticateToken = require('../middlewares/authMiddlewares');
  *                   active:
  *                     type: boolean
  */
-router.get('/users',authenticateToken, userController.listUsers);
+router.get('/users', authenticateToken, userController.listUsers);
 
 /**
  * @swagger
  * /users/{id}/activate:
- *   put:
+ *   patch:
  *     summary: Activate a user
  *     tags: [Users]
  *     security:
@@ -90,18 +89,18 @@ router.get('/users',authenticateToken, userController.listUsers);
  *         description: The id of the user to activate
  *     responses:
  *       200:
- *         description: User activated successfully
+ *         description: User (USERNAME) activated successfully
  *       404:
  *         description: User not found
  *       500:
  *         description: Some server error
  */
-router.put('/users/:id/activate', authenticateToken, userController.activeUsers);
+router.patch('/users/:id/activate', authenticateToken, userController.activateUser);
 
 /**
  * @swagger
  * /users/{id}/deactivate:
- *   put:
+ *   patch:
  *     summary: Deactivate a user
  *     tags: [Users]
  *     security:
@@ -112,15 +111,50 @@ router.put('/users/:id/activate', authenticateToken, userController.activeUsers)
  *         schema:
  *           type: integer
  *         required: true
- *         description: The id of the user to activate
+ *         description: The id of the user to deactivate
  *     responses:
  *       200:
- *         description: User deactivated successfully
+ *         description: User (USERNAME) deactivated successfully
  *       404:
  *         description: User not found
  *       500:
  *         description: Some server error
  */
-router.put('/users/:id/deactivate', authenticateToken, userController.deactiveUsers);
- 
-module.exports = router
+router.patch('/users/:id/deactivate', authenticateToken, userController.deactivateUser);
+
+/**
+ * @swagger
+ * /users/{id}/password:
+ *   patch:
+ *     summary: Update a user's password
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the user to update the password
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 description: The new password for the user
+ *     responses:
+ *       200:
+ *         description: Password updated successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Some server error
+ */
+router.patch('/users/:id/password', authenticateToken, userController.updatePassword);
+
+module.exports = router;
