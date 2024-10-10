@@ -107,4 +107,42 @@ router.post('/register', authController.register);
  */
 router.post('/login', authController.login);
 
+/**
+ * @swagger
+ * /users/{id}:
+ *   patch:
+ *     summary: Update a user's username and loginuser
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the user to update the username and loginuser
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: The new username for the user
+ *               loginuser:
+ *                 type: string
+ *                 description: The new loginuser for the user
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Some server error
+ */
+router.patch('/users/:id', authenticateToken, userController.updateUser);
+
 module.exports = router;

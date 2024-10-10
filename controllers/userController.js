@@ -1,4 +1,3 @@
-
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
@@ -70,4 +69,22 @@ exports.updatePassword = async (req, res) => {
     } catch (error) {
         res.status(500).send(error.mensagem);
     }
-}
+};
+
+exports.updadeUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { username, loginuser } = req.body;
+        const user = await User.findOne({ where: { id: id } });
+        if (user) {
+            user.username = username;
+            user.loginuser = loginuser;
+            await user.save();
+            res.status(404).json({ massege: 'User update succesfuly' });
+        } else {
+            res.status(404).send('User not fund');
+        }
+    } catch (error) {
+        res.status(500).send(error.mensagem);
+    }
+};
