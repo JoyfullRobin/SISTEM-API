@@ -21,4 +21,4 @@ const Products = sequelize.define('Product', {
 },{
     timestamps:false,
 }
-)
+);
